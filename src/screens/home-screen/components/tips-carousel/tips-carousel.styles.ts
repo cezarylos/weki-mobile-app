@@ -7,7 +7,6 @@ import { TIPS_CAROUSEL_ITEM_SIZE } from './tips-carousel';
 export const styles = StyleSheet.create({
   carouselContainer: {
     marginTop: normalizeY(16),
-    marginLeft: normalize(-24),
     paddingLeft: normalize(24),
     height: TIPS_CAROUSEL_ITEM_SIZE
   },

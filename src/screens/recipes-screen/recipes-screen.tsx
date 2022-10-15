@@ -9,8 +9,8 @@ export default function RecipesScreen({ navigation }: { navigation: DrawerNaviga
   return (
     <Background navigation={navigation}>
       <View style={styles.container}>
-        <Text style={styles.title} onPress={() => navigation.openDrawer()}>
-          I WEKI
+        <Text style={styles.title} onPress={navigation.openDrawer}>
+          I WEKI RECIPES
         </Text>
         <View style={styles.separator} />
       </View>

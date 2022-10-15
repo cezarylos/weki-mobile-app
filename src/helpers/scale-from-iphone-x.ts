@@ -1,4 +1,4 @@
-import { StatusBar, TransformsStyle } from 'react-native';
+import { TransformsStyle } from 'react-native';
 
 import { BASE_HEIGHT, BASE_WIDTH, deviceHeight, deviceWidth } from '../constants/device-dimensions';
 
@@ -7,8 +7,6 @@ interface ScaleFromIphoneX {
   yOffset: number;
   keepRatio: boolean;
 }
-
-console.log(StatusBar.currentHeight);
 
 export const scaleFromIphoneX = ({ xOffset, yOffset, keepRatio }: ScaleFromIphoneX): TransformsStyle => ({
   transform: keepRatio

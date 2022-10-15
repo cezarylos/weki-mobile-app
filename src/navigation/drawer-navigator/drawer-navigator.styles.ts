@@ -12,13 +12,16 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: normalize(30),
     top: normalizeY(56),
-    transform: [{ scale: 1.25 }]
+    transform: [{ scale: 1.25 }],
+    elevation: 1000,
   },
   visualElements: {
     top: 0,
     left: '100%',
     position: 'absolute',
-    transform: [{ scaleX: -1 }]
+    transform: [{ scaleX: -1 }],
+    elevation: 1000,
+    zIndex: 1000
   },
   content: {
     paddingHorizontal: normalize(8),

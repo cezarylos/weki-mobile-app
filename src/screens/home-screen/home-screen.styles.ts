@@ -6,14 +6,13 @@ import { normalize, normalizeY } from '../../helpers/normalize';
 export const styles = StyleSheet.create({
   content: {
     flex: 1,
-    backgroundColor: Colors.TRANSPARENT,
-    paddingTop: normalizeY(16),
-    paddingHorizontal: normalize(24)
+    backgroundColor: Colors.TRANSPARENT
   },
   contentContainerStyle: {
     paddingBottom: normalizeY(48)
   },
   title: {
-    color: Colors.WHITE
+    color: Colors.WHITE,
+    paddingHorizontal: normalize(24)
   }
 });

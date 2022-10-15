@@ -1,11 +1,16 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
-import { Animated, Easing, Image, View } from 'react-native';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import { Animated, Easing, Image, StatusBar, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 
 import BaseText from '../../components/base-text/base-text';
 import { FontSizes, FontTypes } from '../../enums';
 import SplashScreenElements from './splash-screen-elements';
 import { styles } from './splash-screen.styles';
+import { LanguageOrchestrator } from '../../_locales/language.orchestrator';
+import { useAppSelector } from '../../store/store';
+import { selectLanguage } from '../../store/global.slice';
+import { shallowEqual } from 'react-redux';
+import { gql, useQuery } from '@apollo/client';
 
 const LOGO_TIMEOUT_IN_MS = 1000;
 const SPLASH_SCREEN_OUTRO_TIMEOUT_IN_MS = 2500;
@@ -16,9 +21,61 @@ interface AnimatedSplashScreenInterface {
   children?: ReactNode;
 }
 
+const GET_GREETING = gql`
+  query {
+    homepage {
+      data {
+        attributes {
+          header
+          recipes_categories {
+            data {
+              attributes {
+                name
+                cover {
+                  data {
+                    attributes {
+                      url
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 const AnimatedSplashScreen = ({ isAppReady, children }: AnimatedSplashScreenInterface) => {
   const logoAnimation = useRef(new Animated.Value(1)).current;
   const splashScreenAnimation = useRef(new Animated.Value(1)).current;
+  const [isShownAnimation, setIsShownAnimation] = useState(true);
+
+  const { loading, error, data } = useQuery(GET_GREETING);
+
+  // if (!loading) {
+  //  const {
+  //    homepage: {
+  //      data: {
+  //        attributes: {
+  //          header,
+  //          recipes_categories: {
+  //            data: recipes
+  //          }
+  //        }
+  //      }
+  //    }
+  //  } = data
+  //   console.log(header);
+  //   console.log(recipes);
+  // }
+
+  const language = useAppSelector(selectLanguage, shallowEqual);
+
+  useEffect((): void => {
+    LanguageOrchestrator.setLanguage(language);
+  }, [language]);
 
   useEffect((): void => {
     if (!isAppReady) {
@@ -38,22 +95,29 @@ const AnimatedSplashScreen = ({ isAppReady, children }: AnimatedSplashScreenInte
         easing: Easing.sin,
         useNativeDriver: true
       })
-    ]);
+    ]).start((): void => {
+      setIsShownAnimation(false);
+      StatusBar.setHidden(false, 'slide');
+    });
   }, [isAppReady, logoAnimation, splashScreenAnimation]);
 
   return (
     <View style={{ flex: 1 }}>
-      <Animated.View pointerEvents='none' style={[{ opacity: splashScreenAnimation }, styles.container]}>
-        <BaseText style={styles.title} fontType={FontTypes.MUSEO_MODERNO_MEDIUM} fontSize={FontSizes.SIZE_40}>
-          Przepisy na przetwory z pomysłem
-        </BaseText>
-        <SplashScreenElements />
-      </Animated.View>
-      <Animated.View pointerEvents='none' style={[{ opacity: logoAnimation }, styles.container]}>
-        <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={require(logo)} />
-        </View>
-      </Animated.View>
+      {isShownAnimation && (
+        <>
+          <Animated.View pointerEvents='none' style={[{ opacity: splashScreenAnimation }, styles.container]}>
+            <BaseText style={styles.title} fontType={FontTypes.MUSEO_MODERNO_MEDIUM} fontSize={FontSizes.SIZE_40}>
+              {LanguageOrchestrator.splashScreen.title}
+            </BaseText>
+            <SplashScreenElements />
+          </Animated.View>
+          <Animated.View pointerEvents='none' style={[{ opacity: logoAnimation }, styles.container]}>
+            <View style={styles.logoContainer}>
+              <Image style={styles.logo} source={require(logo)} />
+            </View>
+          </Animated.View>
+        </>
+      )}
       {isAppReady && children}
     </View>
   );

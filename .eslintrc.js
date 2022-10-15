@@ -4,6 +4,6 @@ module.exports = {
   rules: {
     'comma-dangle': 'off',
     'react-native/no-inline-styles': 0,
-    'quotes': 'single'
+    quotes: 'single'
   }
 };

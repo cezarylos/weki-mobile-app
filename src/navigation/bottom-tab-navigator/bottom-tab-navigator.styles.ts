@@ -22,6 +22,14 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.2,
     shadowRadius: 10,
-    elevation: 5
+    elevation: 1,
+    borderBottomWidth: 0,
+    width: '100%'
+  },
+  bottomBar: {
+    paddingHorizontal: normalize(30),
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });

@@ -5,16 +5,20 @@ import { ReactElement } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 import { CloseSvgComponent, LabelsSvgComponent, SettingsSvgComponent } from '../../components/svg';
-import { NavigatorScreens } from '../../enums/navigation-screens.enum';
 import { DrawerNavigatorTabs } from '../../enums/navigation-tabs.enum';
 import { normalize } from '../../helpers/normalize';
 import BottomTabNavigator from '../bottom-tab-navigator/bottom-tab-navigator';
 import DrawerElements from './drawer-elements';
 import { styles } from './drawer-navigator.styles';
+import { useAppDispatch } from '../../store/store';
+import { setLanguage } from '../../store/global.slice';
+import { Languages } from '../../enums/languages.enum';
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
+  const dispatch = useAppDispatch();
+
   return (
     <DrawerContentScrollView {...props} style={styles.container}>
       <TouchableOpacity activeOpacity={0.7} onPress={props.navigation.closeDrawer} style={styles.closeIcon}>
@@ -28,13 +32,19 @@ function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
           icon={(): ReactElement => <LabelsSvgComponent />}
           labelStyle={styles.label}
           label={'labels'}
-          onPress={(): void => props.navigation.navigate(NavigatorScreens.LABELS)}
+          onPress={(): void => {
+            // props.navigation.navigate(NavigatorScreens.LABELS);
+            dispatch(setLanguage(Languages.enUS));
+          }}
         />
         <DrawerItem
           icon={(): ReactElement => <SettingsSvgComponent />}
           labelStyle={styles.label}
           label="settings"
-          onPress={(): void => props.navigation.navigate(DrawerNavigatorTabs.SETTINGS)}
+          onPress={(): void => {
+            // props.navigation.navigate(DrawerNavigatorTabs.SETTINGS);
+            dispatch(setLanguage(Languages.plPL));
+          }}
         />
       </View>
     </DrawerContentScrollView>

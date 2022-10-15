@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { Fragment, ReactElement, useState } from 'react';
 import { Image, ImageURISource, View } from 'react-native';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 
@@ -64,22 +64,22 @@ const TipsCarousel = (): ReactElement => {
   );
 
   return (
-    <View>
+    <Fragment>
       <Carousel
         containerCustomStyle={styles.carouselContainer}
         data={data}
         renderItem={renderItem}
         sliderWidth={deviceWidth}
         itemWidth={TIPS_CAROUSEL_ITEM_SIZE}
-        itemHeight={TIPS_CAROUSEL_ITEM_SIZE}
         inactiveSlideShift={0}
         inactiveSlideScale={0.75}
         activeSlideAlignment="start"
-        onBeforeSnapToItem={(index: React.SetStateAction<number>) => setActiveSlide(index)}
+        onScrollIndexChanged={(index: React.SetStateAction<number>) => setActiveSlide(index)}
         useScrollView={true}
+        vertical={false}
       />
       {renderPagination()}
-    </View>
+    </Fragment>
   );
 };
 

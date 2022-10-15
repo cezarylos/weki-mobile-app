@@ -5,11 +5,12 @@ import { normalize } from '../../helpers/normalize';
 
 export const styles = StyleSheet.create({
   container: {
-    width: normalize(145)
+    width: normalize(100),
+    elevation: 1
   },
   box: {
-    width: normalize(145),
-    height: normalize(195),
+    width: normalize(100),
+    height: normalize(135),
     backgroundColor: 'rgba(252, 205, 172, 0.85)',
     borderRadius: normalize(12),
     padding: normalize(8),
@@ -20,12 +21,12 @@ export const styles = StyleSheet.create({
     position: 'relative'
   },
   isLikedContainer: {
-    // position: 'absolute',
-    // top: normalize(18),
-    // right: normalize(32)
+    position: 'absolute',
+    top: normalize(18),
+    right: normalize(32)
   },
   imageContainer: {
-    width: normalize(125)
+    width: '100%'
   },
   image: {
     width: '100%',

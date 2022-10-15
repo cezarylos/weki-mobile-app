@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     width: '100%',
     position: 'relative',
     marginTop: normalizeY(52),
-    marginBottom: normalizeY(16),
     paddingHorizontal: normalize(24),
     alignItems: 'center',
     justifyContent: 'space-between',
