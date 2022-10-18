@@ -5,14 +5,14 @@ import { ReactElement } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 
 import { CloseSvgComponent, LabelsSvgComponent, SettingsSvgComponent } from '../../components/svg';
+import { Languages } from '../../enums/languages.enum';
 import { DrawerNavigatorTabs } from '../../enums/navigation-tabs.enum';
 import { normalize } from '../../helpers/normalize';
+import { setLanguage } from '../../store/global.slice';
+import { useAppDispatch } from '../../store/store';
 import BottomTabNavigator from '../bottom-tab-navigator/bottom-tab-navigator';
 import DrawerElements from './drawer-elements';
 import { styles } from './drawer-navigator.styles';
-import { useAppDispatch } from '../../store/store';
-import { setLanguage } from '../../store/global.slice';
-import { Languages } from '../../enums/languages.enum';
 
 const Drawer = createDrawerNavigator();
 

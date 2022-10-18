@@ -1,5 +1,9 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { Fragment, ReactElement } from 'react';
+import { View } from 'react-native';
+import { Shadow } from 'react-native-shadow-2';
 
 import { CalendarSvgComponent, HomeSvgComponent, LikedSvgComponent, RecipesSvgComponent } from '../../components/svg';
 import TabIcon from '../../components/tab-icon/tab-icon';
@@ -16,39 +20,38 @@ import {
   RecipesScreenParamList
 } from '../types';
 import { styles } from './bottom-tab-navigator.styles';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Shadow } from 'react-native-shadow-2';
-import { View } from 'react-native';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs/src/types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 const tabIcons = [
-  { route: BottomNavigatorTabs.HOME, icon: <HomeSvgComponent />},
-  { route: BottomNavigatorTabs.RECIPES, icon: <RecipesSvgComponent />},
-  { route: BottomNavigatorTabs.LIKED, icon: <LikedSvgComponent />},
-  { route: BottomNavigatorTabs.CALENDAR, icon: <CalendarSvgComponent />},
-]
+  { route: BottomNavigatorTabs.HOME, icon: <HomeSvgComponent /> },
+  { route: BottomNavigatorTabs.RECIPES, icon: <RecipesSvgComponent /> },
+  { route: BottomNavigatorTabs.LIKED, icon: <LikedSvgComponent /> },
+  { route: BottomNavigatorTabs.CALENDAR, icon: <CalendarSvgComponent /> }
+];
 
 function TabBar({ navigation, state }: BottomTabBarProps): ReactElement {
-
   const { index: activeIndex } = state;
 
-  const onNavigate = (route: BottomNavigatorTabs): () => void => (): void => {
-    navigation.navigate(route)
-  }
+  const onNavigate =
+    (route: BottomNavigatorTabs): (() => void) =>
+    (): void => {
+      navigation.navigate(route);
+    };
 
-  return <Shadow viewStyle={styles.container}>
-    <View style={styles.bottomBar}>
-      {tabIcons.map(({ route, icon }, idx) =>
-        <Fragment key={route}>
-          <TabIcon isFocused={idx === activeIndex} onPress={onNavigate(route)}>
-            {icon}
-          </TabIcon>
-        </Fragment>
-      )}
-    </View>
-  </Shadow>;
+  return (
+    <Shadow viewStyle={styles.container}>
+      <View style={styles.bottomBar}>
+        {tabIcons.map(({ route, icon }, idx) => (
+          <Fragment key={route}>
+            <TabIcon isFocused={idx === activeIndex} onPress={onNavigate(route)}>
+              {icon}
+            </TabIcon>
+          </Fragment>
+        ))}
+      </View>
+    </Shadow>
+  );
 }
 
 export default function BottomTabNavigator(): ReactElement {
@@ -62,22 +65,10 @@ export default function BottomTabNavigator(): ReactElement {
         headerShown: false
       }}
     >
-      <BottomTab.Screen
-        name={BottomNavigatorTabs.HOME}
-        component={HomeTabNavigator}
-      />
-      <BottomTab.Screen
-        name={BottomNavigatorTabs.RECIPES}
-        component={RecipesTabNavigator}
-      />
-      <BottomTab.Screen
-        name={BottomNavigatorTabs.LIKED}
-        component={LikedTabNavigator}
-      />
-      <BottomTab.Screen
-        name={BottomNavigatorTabs.CALENDAR}
-        component={CalendarTabNavigator}
-      />
+      <BottomTab.Screen name={BottomNavigatorTabs.HOME} component={HomeTabNavigator} />
+      <BottomTab.Screen name={BottomNavigatorTabs.RECIPES} component={RecipesTabNavigator} />
+      <BottomTab.Screen name={BottomNavigatorTabs.LIKED} component={LikedTabNavigator} />
+      <BottomTab.Screen name={BottomNavigatorTabs.CALENDAR} component={CalendarTabNavigator} />
     </BottomTab.Navigator>
   );
 }

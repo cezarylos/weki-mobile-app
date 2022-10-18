@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { normalize, normalizeY } from '../../../../helpers/normalize';
+
 import { Colors, FontSizes } from '../../../../enums';
+import { normalize, normalizeY } from '../../../../helpers/normalize';
 
 export const styles = StyleSheet.create({
   wrapper: {
@@ -12,7 +13,7 @@ export const styles = StyleSheet.create({
     marginTop: normalizeY(-24)
   },
   title: {
-    color: Colors.TEXT_PRIMARY,
+    color: Colors.TEXT_PRIMARY
   },
   dot: {
     color: Colors.TEXT_PRIMARY,

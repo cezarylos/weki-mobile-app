@@ -24,7 +24,7 @@ const RecipeItem = ({ url, label, isLiked, isSmall }: RecipeItemInterface): Reac
       {/*  </ScalableSvg>*/}
       {/*</View>*/}
       <View style={styles.imageContainer}>
-        <SvgUri height='100%' width='100%' uri={url} style={styles.image} />
+        <SvgUri height="100%" width="100%" uri={url} style={styles.image} />
       </View>
     </View>
     <BaseText style={styles.label} fontType={FontTypes.MUSEO_MODERNO_MEDIUM} fontSize={FontSizes.SIZE_14}>

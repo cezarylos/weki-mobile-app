@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Slices } from '../enums/slices';
+
 import { Languages } from '../enums/languages.enum';
+import { Slices } from '../enums/slices';
 import { AppState } from './store';
 
 type SliceState = {
@@ -19,11 +20,10 @@ export const globalSlice = createSlice({
       state.language = payload;
     }
   }
-})
+});
 
 export const { setLanguage } = globalSlice.actions;
 
 export const selectLanguage = (state: AppState) => state.global.language;
 
-
-export default globalSlice.reducer
+export default globalSlice.reducer;

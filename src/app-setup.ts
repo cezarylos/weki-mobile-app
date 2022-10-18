@@ -1,6 +1,7 @@
+import { StatusBar } from 'react-native';
+
 import { LanguageOrchestrator } from './_locales/language.orchestrator';
 import { Languages } from './enums/languages.enum';
-import { StatusBar } from 'react-native';
 import { isAndroidPlatform } from './helpers/platform';
 
 const statusBarSettings = (): void => {
@@ -9,7 +10,7 @@ const statusBarSettings = (): void => {
     StatusBar.setTranslucent(true);
     StatusBar.setBackgroundColor('transparent');
   }
-}
+};
 
 export const appSetup = async (): Promise<void> => {
   statusBarSettings();

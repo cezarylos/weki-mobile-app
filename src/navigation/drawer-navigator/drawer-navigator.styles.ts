@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     right: normalize(30),
     top: normalizeY(56),
     transform: [{ scale: 1.25 }],
-    elevation: 1000,
+    elevation: 1000
   },
   visualElements: {
     top: 0,

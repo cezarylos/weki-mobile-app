@@ -1,6 +1,7 @@
 export enum RootNavigatorTabs {
   MAIN = 'main',
-  MODAL = 'modal'
+  MODAL = 'modal',
+  RECIPES = 'Recipes'
 }
 
 export enum DrawerNavigatorTabs {
