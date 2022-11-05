@@ -22,5 +22,9 @@ export const enTranslates = {
     9: 'october',
     10: 'november',
     11: 'december'
+  },
+  drawer: {
+    login: 'login',
+    logout: 'logout'
   }
 };

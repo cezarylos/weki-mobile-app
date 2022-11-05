@@ -22,5 +22,9 @@ export const plTranslates = {
     9: 'październik',
     10: 'listopad',
     11: 'grudzień'
+  },
+  drawer: {
+    login: 'zaloguj',
+    logout: 'wyloguj'
   }
 };

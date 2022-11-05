@@ -22,8 +22,8 @@ export const styles = StyleSheet.create({
   },
   isLikedContainer: {
     position: 'absolute',
-    top: normalize(18),
-    right: normalize(32)
+    top: normalize(6),
+    right: normalize(26)
   },
   imageContainer: {
     width: '100%'

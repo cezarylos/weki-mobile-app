@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontTypes } from '../../enums';
+import { Colors, FontSizes, FontTypes } from '../../enums';
 import { normalize, normalizeY } from '../../helpers/normalize';
 
 export const styles = StyleSheet.create({
@@ -25,13 +25,21 @@ export const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: normalize(8),
-    marginTop: normalize(36)
+    marginTop: normalize(36),
+    flex: 1
   },
   label: {
     marginLeft: normalize(-16),
     fontFamily: FontTypes.MUSEO_MODERNO_REGUALAR,
     color: Colors.WHITE,
-    fontSize: normalize(18)
+    fontSize: FontSizes.SIZE_18
+  },
+  noIcon: {
+    marginLeft: normalize(0),
+    fontSize: FontSizes.SIZE_24
+  },
+  toBottom: {
+    // marginTop: normalizeY(8)
   },
   bottomNavigationSceneStyles: {
     backgroundColor: Colors.BACKGROUND

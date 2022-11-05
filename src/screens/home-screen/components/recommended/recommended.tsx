@@ -2,6 +2,8 @@ import { gql, useQuery } from '@apollo/client';
 import React, { Fragment, ReactElement, useMemo } from 'react';
 import { View } from 'react-native';
 
+import { API_URL } from '@env';
+
 import { LanguageOrchestrator } from '../../../../_locales/language.orchestrator';
 import BaseText from '../../../../components/base-text/base-text';
 import RecipeItem from '../../../../components/recipe-item/recipe-item';
@@ -30,8 +32,26 @@ const GET_RECOMMENDED_RECIPES = gql`
   }
 `;
 
+interface GetRecommendedRecipesInterface {
+  recipes: {
+    data: {
+      id: number;
+      attributes: {
+        title: string;
+        cover: {
+          data: {
+            attributes: {
+              url: string;
+            };
+          };
+        };
+      };
+    }[];
+  };
+}
+
 export default function Recommended(): ReactElement {
-  const { loading, error, data } = useQuery(GET_RECOMMENDED_RECIPES);
+  const { loading, error, data } = useQuery<GetRecommendedRecipesInterface>(GET_RECOMMENDED_RECIPES);
 
   const recipes = useMemo(
     () =>
@@ -49,7 +69,7 @@ export default function Recommended(): ReactElement {
         }) => ({
           id,
           title,
-          url: 'http://localhost:1337' + url
+          url: `${API_URL}${url}`
         })
       ),
     [data]

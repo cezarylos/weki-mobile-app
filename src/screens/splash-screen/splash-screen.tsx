@@ -7,7 +7,7 @@ import { shallowEqual } from 'react-redux';
 import { LanguageOrchestrator } from '../../_locales/language.orchestrator';
 import BaseText from '../../components/base-text/base-text';
 import { FontSizes, FontTypes } from '../../enums';
-import { selectLanguage } from '../../store/global.slice';
+import { selectLanguage } from '../../store/global/global.slice';
 import { useAppSelector } from '../../store/store';
 import SplashScreenElements from './splash-screen-elements';
 import { styles } from './splash-screen.styles';

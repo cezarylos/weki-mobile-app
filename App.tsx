@@ -8,8 +8,9 @@ import { Provider } from 'react-redux';
 import { appSetup } from './src/app-setup';
 import Navigation from './src/navigation';
 import AnimatedSplashScreen from './src/screens/splash-screen/splash-screen';
-import AuthService from './src/services/auth.service';
-import store from './src/store/store';
+import { getUser } from './src/store/global/global.actions';
+import { selectJWT } from './src/store/global/global.slice';
+import store, { useAppDispatch, useAppSelector } from './src/store/store';
 
 const httpLink = createHttpLink({
   uri: `${API_URL}/graphql`
@@ -28,7 +29,8 @@ const composeAuthMiddleware = (jwt?: string) =>
 
 const ApolloWrapper = function ({ isAppReady }: { isAppReady: boolean }): ReactElement {
   const { user, getCredentials } = useAuth0();
-  const [jwt, setJwt] = useState('');
+  const jwt = useAppSelector(selectJWT);
+  const dispatch = useAppDispatch();
 
   const [apolloClient, setApolloClient] = useState<ApolloClient<any> | null>(null);
 
@@ -41,30 +43,11 @@ const ApolloWrapper = function ({ isAppReady }: { isAppReady: boolean }): ReactE
   }, [jwt]);
 
   useEffect((): void => {
-    const getJwtToken = async (): Promise<void> => {
-      try {
-        const {
-          idToken: id_token,
-          accessToken: access_token,
-          expiresIn: expires_in,
-          tokenType: token_type
-        } = await getCredentials();
-
-        const {
-          data: { jwt }
-        } = await AuthService.getJwtToken({
-          id_token,
-          access_token,
-          expires_in,
-          token_type
-        });
-        setJwt(jwt);
-      } catch (e) {
-        console.error(e);
-      }
+    const getInitialUser = async (): Promise<void> => {
+      await dispatch(getUser(getCredentials));
     };
     if (user) {
-      getJwtToken().finally();
+      getInitialUser().finally();
     }
   }, [user]);
 
@@ -72,13 +55,11 @@ const ApolloWrapper = function ({ isAppReady }: { isAppReady: boolean }): ReactE
     <>
       {apolloClient && (
         <ApolloProvider client={apolloClient as ApolloClient<any>}>
-          <Provider store={store}>
-            <AnimatedSplashScreen isAppReady={isAppReady}>
-              <SafeAreaProvider style={{ flex: 1 }}>
-                <Navigation />
-              </SafeAreaProvider>
-            </AnimatedSplashScreen>
-          </Provider>
+          <AnimatedSplashScreen isAppReady={isAppReady}>
+            <SafeAreaProvider style={{ flex: 1 }}>
+              <Navigation />
+            </SafeAreaProvider>
+          </AnimatedSplashScreen>
         </ApolloProvider>
       )}
     </>
@@ -96,9 +77,11 @@ const App = function (): ReactElement {
   }, []);
 
   return (
-    <Auth0Provider domain={AUTH0_DOMAIN} clientId={AUTH0_CLIENT_ID}>
-      <ApolloWrapper isAppReady={isAppReady} />
-    </Auth0Provider>
+    <Provider store={store}>
+      <Auth0Provider domain={AUTH0_DOMAIN} clientId={AUTH0_CLIENT_ID}>
+        <ApolloWrapper isAppReady={isAppReady} />
+      </Auth0Provider>
+    </Provider>
   );
 };
 

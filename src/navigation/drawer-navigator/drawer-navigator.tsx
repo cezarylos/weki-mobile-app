@@ -3,12 +3,14 @@ import { DrawerContentComponentProps } from '@react-navigation/drawer/src/types'
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { useAuth0 } from 'react-native-auth0';
 
+import { LanguageOrchestrator } from '../../_locales/language.orchestrator';
 import { CloseSvgComponent, LabelsSvgComponent, SettingsSvgComponent } from '../../components/svg';
-import { Languages } from '../../enums/languages.enum';
+import { NavigatorScreens } from '../../enums/navigation-screens.enum';
 import { DrawerNavigatorTabs } from '../../enums/navigation-tabs.enum';
+import { navigateTo } from '../../helpers/navigateTo';
 import { normalize } from '../../helpers/normalize';
-import { setLanguage } from '../../store/global.slice';
 import { useAppDispatch } from '../../store/store';
 import BottomTabNavigator from '../bottom-tab-navigator/bottom-tab-navigator';
 import DrawerElements from './drawer-elements';
@@ -17,11 +19,35 @@ import { styles } from './drawer-navigator.styles';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
+  const {
+    navigation,
+    navigation: { navigate }
+  } = props;
+  const { authorize, user, clearSession } = useAuth0();
+
   const dispatch = useAppDispatch();
+
+  const onLogin = async (): Promise<void> => {
+    try {
+      await authorize();
+      navigation.closeDrawer();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onLogout = async (): Promise<void> => {
+    try {
+      await clearSession();
+      navigation.closeDrawer();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <DrawerContentScrollView {...props} style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7} onPress={props.navigation.closeDrawer} style={styles.closeIcon}>
+      <TouchableOpacity activeOpacity={0.7} onPress={navigation.closeDrawer} style={styles.closeIcon}>
         <CloseSvgComponent />
       </TouchableOpacity>
       <View style={styles.visualElements}>
@@ -32,20 +58,27 @@ function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
           icon={(): ReactElement => <LabelsSvgComponent />}
           labelStyle={styles.label}
           label={'labels'}
-          onPress={(): void => {
-            // props.navigation.navigate(NavigatorScreens.LABELS);
-            dispatch(setLanguage(Languages.enUS));
-          }}
+          onPress={navigateTo(navigate, NavigatorScreens.LABELS)}
         />
         <DrawerItem
           icon={(): ReactElement => <SettingsSvgComponent />}
           labelStyle={styles.label}
           label="settings"
-          onPress={(): void => {
-            // props.navigation.navigate(DrawerNavigatorTabs.SETTINGS);
-            dispatch(setLanguage(Languages.plPL));
-          }}
+          onPress={navigateTo(navigate, NavigatorScreens.RECIPES)}
         />
+        {user ? (
+          <DrawerItem
+            labelStyle={[styles.label, styles.noIcon, styles.toBottom]}
+            label={LanguageOrchestrator.drawer.logout}
+            onPress={onLogout}
+          />
+        ) : (
+          <DrawerItem
+            labelStyle={[styles.label, styles.noIcon, styles.toBottom]}
+            label={LanguageOrchestrator.drawer.login}
+            onPress={onLogin}
+          />
+        )}
       </View>
     </DrawerContentScrollView>
   );
