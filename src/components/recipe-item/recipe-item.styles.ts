@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     width: normalize(100),
     elevation: 1
   },
+  categoryContainer: {
+    width: normalize(150)
+  },
   box: {
     width: normalize(100),
     height: normalize(135),
@@ -20,10 +23,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'relative'
   },
+  categoryBox: {
+    width: normalize(150),
+    height: normalize(210)
+  },
   isLikedContainer: {
     position: 'absolute',
     top: normalize(6),
-    right: normalize(26)
+    right: normalize(24),
+    transform: [{ scale: 0.9 }]
   },
   imageContainer: {
     width: '100%'
@@ -37,5 +45,10 @@ export const styles = StyleSheet.create({
     paddingLeft: normalize(12),
     color: Colors.TEXT_PRIMARY,
     lineHeight: normalize(16)
+  },
+  categoryLabel: {
+    textTransform: 'uppercase',
+    paddingTop: normalize(8),
+    lineHeight: normalize(20)
   }
 });

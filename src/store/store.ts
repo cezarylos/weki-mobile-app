@@ -2,10 +2,14 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import globalReducer from './global/global.slice';
+import recipesReducer from './recipes/recipes.slice';
 
 export function makeStore() {
   return configureStore({
-    reducer: { global: globalReducer }
+    reducer: {
+      global: globalReducer,
+      recipes: recipesReducer
+    }
   });
 }
 

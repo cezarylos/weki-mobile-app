@@ -1,12 +1,16 @@
-import { API_URL } from '@env';
+import { AxiosPromise } from 'axios';
 
-import axios, { AxiosPromise } from 'axios';
-
+import { UserInterface } from '../interfaces/user.interface';
+import { apiInstance } from './api.service';
 import { GetJwtTokenParamsInterface } from './auth.service.interface';
 
 class AuthService {
-  static getJwtToken(params: GetJwtTokenParamsInterface): AxiosPromise<{ jwt: string; user: any }> {
-    return axios.get(`${API_URL}/api/auth/auth0/callback`, { params });
+  static getJwtToken(params: GetJwtTokenParamsInterface): AxiosPromise<{ jwt: string; user: UserInterface }> {
+    return apiInstance.get('/auth/auth0/callback', { params });
+  }
+
+  static getUsers(): AxiosPromise {
+    return apiInstance.get('/users');
   }
 }
 

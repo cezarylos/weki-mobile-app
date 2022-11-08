@@ -24,6 +24,7 @@ export type HomeScreenParamList = {
 };
 
 export type RecipesScreenParamList = {
+  [NavigatorScreens.CATEGORIES]: undefined;
   [NavigatorScreens.RECIPES]: undefined;
 };
 

@@ -1,78 +1,32 @@
-import { gql, useQuery } from '@apollo/client';
 import React, { Fragment, ReactElement, useMemo } from 'react';
 import { View } from 'react-native';
-
-import { API_URL } from '@env';
 
 import { LanguageOrchestrator } from '../../../../_locales/language.orchestrator';
 import BaseText from '../../../../components/base-text/base-text';
 import RecipeItem from '../../../../components/recipe-item/recipe-item';
 import { FontSizes, FontTypes } from '../../../../enums';
+import { RecipeInterface } from '../../../../interfaces/recipe.interface';
+import { selectUser } from '../../../../store/global/global.slice';
+import { selectRecommendedRecipes } from '../../../../store/recipes/recipes.slice';
+import { useAppSelector } from '../../../../store/store';
 import { styles } from './recommended.styles';
 
 const utcMonth = new Date().getUTCMonth();
 const currentMonth = (LanguageOrchestrator.months as Record<number, string>)[utcMonth];
 
-const GET_RECOMMENDED_RECIPES = gql`
-  query {
-    recipes(filters: { isRecommended: { eq: true } }) {
-      data {
-        attributes {
-          title
-          cover {
-            data {
-              attributes {
-                url
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-interface GetRecommendedRecipesInterface {
-  recipes: {
-    data: {
-      id: number;
-      attributes: {
-        title: string;
-        cover: {
-          data: {
-            attributes: {
-              url: string;
-            };
-          };
-        };
-      };
-    }[];
-  };
-}
-
 export default function Recommended(): ReactElement {
-  const { loading, error, data } = useQuery<GetRecommendedRecipesInterface>(GET_RECOMMENDED_RECIPES);
+  const recipes = useAppSelector(selectRecommendedRecipes);
+  const user = useAppSelector(selectUser);
 
-  const recipes = useMemo(
-    () =>
-      data?.recipes.data.map(
-        ({
-          id,
-          attributes: {
-            title,
-            cover: {
-              data: {
-                attributes: { url }
-              }
-            }
-          }
-        }) => ({
-          id,
-          title,
-          url: `${API_URL}${url}`
-        })
-      ),
-    [data]
+  const likedRecipes = user?.likedRecipes || [];
+
+  const parsedRecipes = useMemo(
+    (): RecipeInterface[] =>
+      recipes.map(recipe => ({
+        ...recipe,
+        isLiked: likedRecipes.includes(recipe.id)
+      })),
+    [recipes, likedRecipes]
   );
 
   return (
@@ -89,12 +43,11 @@ export default function Recommended(): ReactElement {
         </BaseText>
       </View>
       <View style={styles.list}>
-        {!loading &&
-          recipes?.map(({ title, url }, idx: number) => (
-            <Fragment key={idx}>
-              <RecipeItem isSmall url={url} label={title} />
-            </Fragment>
-          ))}
+        {parsedRecipes?.map(recipe => (
+          <Fragment key={recipe.id}>
+            <RecipeItem isSmall {...recipe} />
+          </Fragment>
+        ))}
       </View>
     </View>
   );

@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: Colors.TRANSPARENT,
-    zIndex: 1
+    zIndex: 1,
+    height: normalizeY(48)
   }
 });

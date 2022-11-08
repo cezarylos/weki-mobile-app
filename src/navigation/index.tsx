@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import { Button, Linking, Text, View } from 'react-native';
 
+import { Colors } from '../enums';
 import { RootNavigatorTabs } from '../enums/navigation-tabs.enum';
 import RecipesScreen from '../screens/recipes-screen/recipes-screen';
 import DrawerNavigator from './drawer-navigator/drawer-navigator';
@@ -46,7 +47,7 @@ const linking = {
 
 export default function Navigation() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={{ colors: { background: Colors.BACKGROUND } }}>
       <RootNavigator />
     </NavigationContainer>
   );

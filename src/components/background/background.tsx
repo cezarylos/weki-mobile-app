@@ -3,6 +3,7 @@ import React, { ReactElement, ReactNode } from 'react';
 import { View } from 'react-native';
 
 import { Colors } from '../../enums';
+import FadeView from '../fade-view/fade-view';
 import TopBar from '../top-bar/top-bar';
 import { styles } from './background.styles';
 
@@ -19,16 +20,20 @@ const Background = ({
   backgroundColor,
   isNoPaddingHorizontal
 }: BackgroundInterface): ReactElement => (
-  <View
-    style={[
-      styles.container,
-      backgroundColor && { backgroundColor },
-      isNoPaddingHorizontal && { paddingHorizontal: 0 }
-    ]}
-  >
-    {navigation && <TopBar navigation={navigation} />}
-    {children}
-  </View>
+  <FadeView>
+    <View
+      style={[
+        styles.container,
+        backgroundColor && { backgroundColor },
+        isNoPaddingHorizontal && { paddingHorizontal: 0 }
+      ]}
+    >
+      <>
+        {navigation && <TopBar navigation={navigation} />}
+        {children}
+      </>
+    </View>
+  </FadeView>
 );
 
 export default Background;

@@ -1,4 +1,3 @@
-import { gql, useQuery } from '@apollo/client';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Image, StatusBar, View } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -21,55 +20,10 @@ interface AnimatedSplashScreenInterface {
   children?: ReactNode;
 }
 
-const GET_GREETING = gql`
-  query {
-    homepage {
-      data {
-        attributes {
-          header
-          recipes_categories {
-            data {
-              attributes {
-                name
-                cover {
-                  data {
-                    attributes {
-                      url
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const AnimatedSplashScreen = ({ isAppReady, children }: AnimatedSplashScreenInterface) => {
   const logoAnimation = useRef(new Animated.Value(1)).current;
   const splashScreenAnimation = useRef(new Animated.Value(1)).current;
   const [isShownAnimation, setIsShownAnimation] = useState(true);
-
-  const { loading, error, data } = useQuery(GET_GREETING);
-
-  // if (!loading) {
-  //  const {
-  //    homepage: {
-  //      data: {
-  //        attributes: {
-  //          header,
-  //          recipes_categories: {
-  //            data: recipes
-  //          }
-  //        }
-  //      }
-  //    }
-  //  } = data
-  //   console.log(header);
-  //   console.log(recipes);
-  // }
 
   const language = useAppSelector(selectLanguage, shallowEqual);
 

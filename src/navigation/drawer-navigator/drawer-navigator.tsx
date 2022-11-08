@@ -7,10 +7,13 @@ import { useAuth0 } from 'react-native-auth0';
 
 import { LanguageOrchestrator } from '../../_locales/language.orchestrator';
 import { CloseSvgComponent, LabelsSvgComponent, SettingsSvgComponent } from '../../components/svg';
+import { ACTIVE_OPACITY } from '../../constants/shared';
+import { Colors } from '../../enums';
 import { NavigatorScreens } from '../../enums/navigation-screens.enum';
 import { DrawerNavigatorTabs } from '../../enums/navigation-tabs.enum';
 import { navigateTo } from '../../helpers/navigateTo';
 import { normalize } from '../../helpers/normalize';
+import { getUser } from '../../store/global/global.actions';
 import { useAppDispatch } from '../../store/store';
 import BottomTabNavigator from '../bottom-tab-navigator/bottom-tab-navigator';
 import DrawerElements from './drawer-elements';
@@ -23,16 +26,17 @@ function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
     navigation,
     navigation: { navigate }
   } = props;
-  const { authorize, user, clearSession } = useAuth0();
+  const { authorize, user, clearSession, getCredentials } = useAuth0();
 
   const dispatch = useAppDispatch();
 
   const onLogin = async (): Promise<void> => {
     try {
       await authorize();
+      await dispatch(getUser(getCredentials));
       navigation.closeDrawer();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
@@ -41,13 +45,13 @@ function CustomDrawerContent(props: DrawerContentComponentProps): ReactElement {
       await clearSession();
       navigation.closeDrawer();
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 
   return (
     <DrawerContentScrollView {...props} style={styles.container}>
-      <TouchableOpacity activeOpacity={0.7} onPress={navigation.closeDrawer} style={styles.closeIcon}>
+      <TouchableOpacity activeOpacity={ACTIVE_OPACITY} onPress={navigation.closeDrawer} style={styles.closeIcon}>
         <CloseSvgComponent />
       </TouchableOpacity>
       <View style={styles.visualElements}>
@@ -93,7 +97,8 @@ function DrawerNavigator(): ReactElement {
         headerShown: false,
         drawerType: 'front',
         drawerStyle: { width: normalize(215) },
-        swipeEdgeWidth: 0
+        swipeEdgeWidth: 0,
+        sceneContainerStyle: { backgroundColor: Colors.BACKGROUND }
       }}
       drawerContent={props => <CustomDrawerContent {...props} />}
     >

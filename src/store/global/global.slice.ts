@@ -2,12 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Languages } from '../../enums/languages.enum';
 import { Slices } from '../../enums/slices';
+import { UserInterface } from '../../interfaces/user.interface';
 import { AppState } from '../store';
 import { getUser } from './global.actions';
 
 type SliceState = {
   language: Languages;
-  user: Record<string, any> | null;
+  user: UserInterface | null;
   jwt: string;
 };
 
@@ -23,12 +24,15 @@ export const globalSlice = createSlice({
   reducers: {
     setLanguage: (state: SliceState, { payload }: PayloadAction<Languages>): void => {
       state.language = payload;
+    },
+    setUser: (state: SliceState, { payload }: PayloadAction<UserInterface>): void => {
+      state.user = payload;
     }
   },
   extraReducers: {
     [getUser.fulfilled.type]: (
       state: SliceState,
-      { payload: { jwt, user } }: PayloadAction<{ jwt: string; user: any }>
+      { payload: { jwt, user } }: PayloadAction<{ jwt: string; user: UserInterface }>
     ): void => {
       state.user = user;
       state.jwt = jwt;
@@ -36,7 +40,7 @@ export const globalSlice = createSlice({
   }
 });
 
-export const { setLanguage } = globalSlice.actions;
+export const { setLanguage, setUser } = globalSlice.actions;
 
 export const selectLanguage = (state: AppState) => state.global.language;
 export const selectUser = (state: AppState) => state.global.user;

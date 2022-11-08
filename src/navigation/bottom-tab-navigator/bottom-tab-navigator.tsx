@@ -5,10 +5,17 @@ import React, { Fragment, ReactElement } from 'react';
 import { View } from 'react-native';
 import { Shadow } from 'react-native-shadow-2';
 
-import { CalendarSvgComponent, HomeSvgComponent, LikedSvgComponent, RecipesSvgComponent } from '../../components/svg';
+import {
+  CalendarSvgComponent,
+  HomeSvgComponent,
+  LikedMenuItemSvgComponent,
+  RecipesSvgComponent
+} from '../../components/svg';
 import TabIcon from '../../components/tab-icon/tab-icon';
+import { Colors } from '../../enums';
 import { NavigatorScreens } from '../../enums/navigation-screens.enum';
 import { BottomNavigatorTabs } from '../../enums/navigation-tabs.enum';
+import CategoriesScreen from '../../screens/categories-screen/categories-screen';
 import HomeScreen from '../../screens/home-screen/home-screen';
 import LabelsScreen from '../../screens/labels-screen/labels-screen';
 import RecipesScreen from '../../screens/recipes-screen/recipes-screen';
@@ -26,7 +33,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 const tabIcons = [
   { route: BottomNavigatorTabs.HOME, icon: <HomeSvgComponent /> },
   { route: BottomNavigatorTabs.RECIPES, icon: <RecipesSvgComponent /> },
-  { route: BottomNavigatorTabs.LIKED, icon: <LikedSvgComponent /> },
+  { route: BottomNavigatorTabs.LIKED, icon: <LikedMenuItemSvgComponent /> },
   { route: BottomNavigatorTabs.CALENDAR, icon: <CalendarSvgComponent /> }
 ];
 
@@ -59,6 +66,7 @@ export default function BottomTabNavigator(): ReactElement {
     <BottomTab.Navigator
       tabBar={props => <TabBar {...props} />}
       initialRouteName={BottomNavigatorTabs.HOME}
+      sceneContainerStyle={{ backgroundColor: Colors.BACKGROUND }}
       screenOptions={{
         tabBarStyle: styles.container,
         tabBarShowLabel: false,
@@ -97,6 +105,11 @@ const RecipesTabStack = createStackNavigator<RecipesScreenParamList>();
 function RecipesTabNavigator(): ReactElement {
   return (
     <RecipesTabStack.Navigator>
+      <RecipesTabStack.Screen
+        name={NavigatorScreens.CATEGORIES}
+        component={CategoriesScreen}
+        options={{ headerShown: false }}
+      />
       <RecipesTabStack.Screen
         name={NavigatorScreens.RECIPES}
         component={RecipesScreen}

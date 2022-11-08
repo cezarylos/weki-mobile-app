@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { LanguageOrchestrator } from '../../_locales/language.orchestrator';
 import Background from '../../components/background/background';
@@ -21,11 +21,7 @@ export default function HomeScreen({ navigation }: WithDrawerNavigationInterface
       <ScalableSvg top={460} left={175}>
         <Element2SvgComponent />
       </ScalableSvg>
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.contentContainerStyle}
-        showsVerticalScrollIndicator={false}
-      >
+      <View style={styles.contentContainerStyle}>
         <BaseText style={styles.title} fontType={FontTypes.MUSEO_MODERNO_MEDIUM} fontSize={FontSizes.SIZE_24}>
           {LanguageOrchestrator.homeScreen.title}
         </BaseText>
@@ -34,7 +30,7 @@ export default function HomeScreen({ navigation }: WithDrawerNavigationInterface
         </BaseText>
         <TipsCarousel />
         <Recommended />
-      </ScrollView>
+      </View>
     </Background>
   );
 }
