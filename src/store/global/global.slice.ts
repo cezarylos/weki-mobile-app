@@ -32,10 +32,10 @@ export const globalSlice = createSlice({
   extraReducers: {
     [getUser.fulfilled.type]: (
       state: SliceState,
-      { payload: { jwt, user } }: PayloadAction<{ jwt: string; user: UserInterface }>
+      { payload }: PayloadAction<{ jwt: string; user: UserInterface }>
     ): void => {
-      state.user = user;
-      state.jwt = jwt;
+      state.user = payload?.user;
+      state.jwt = payload?.jwt;
     }
   }
 });
